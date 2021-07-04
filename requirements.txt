@@ -1,3 +1,4 @@
 cimpyorm
 fastapi
 uvicorn
+jinja2

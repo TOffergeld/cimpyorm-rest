@@ -1,0 +1,9 @@
+{% extends "index.html" %}
+{% block content %}
+  <style>
+  table {text-align: left;}
+  table thead th {text-align: left;}
+  </style>
+  
+  {{ table | safe}}
+{% endblock %}

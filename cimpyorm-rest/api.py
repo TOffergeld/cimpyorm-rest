@@ -1,8 +1,26 @@
 import cimpyorm as cpo
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 schema = cpo.Schema()
+templates = Jinja2Templates(directory="templates")
+
+
+@app.get("/")
+def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/class/{name}")
+def class_(request: Request, name: str):
+    try:
+        class_ = vars(schema.model.classes)[name]
+    except KeyError:
+        return None
+    return templates.TemplateResponse("classes.html", 
+    {"request": request, "table": class_.to_html(
+        classes=("table", "table-striped"))})
 
 
 @app.get("/classes")
@@ -58,7 +76,3 @@ def _recurse_hierarchy(node):
         _r["children"][child.name] = _recurse_hierarchy(child)
     _r["children"] = {key: value for key, value in sorted(_r["children"].items())}
     return _r
-
-
-if __name__ == "__main__":
-    _recurse_hierarchy(schema.model.classes.IdentifiedObject)
