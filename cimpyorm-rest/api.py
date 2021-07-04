@@ -1,18 +1,19 @@
 import cimpyorm as cpo
 from fastapi import FastAPI
-import networkx as nx
 
 app = FastAPI()
 schema = cpo.Schema()
+
 
 @app.get("/classes")
 def all_classes():
     return [
         {
-            "name": c.name, 
+            "name": c.name,
             "namespace": c.namespace.short
-        } 
+        }
         for c in schema.class_hierarchy()]
+
 
 @app.get("/classes/{classname}")
 async def get_class(classname: str):
@@ -33,15 +34,18 @@ async def get_class(classname: str):
         "properties": list(sc.all_props.keys())
     }
 
+
 @app.get("/hierarchy")
 def default_hierarchy():
     return hierarchy("IdentifiedObject")
+
 
 @app.get("/hierarchy/{start}")
 def hierarchy(start: str):
     start = vars(schema.model.classes)[start]
     res = _recurse_hierarchy(start)
     return res
+
 
 def _recurse_hierarchy(node):
     _r = {}
@@ -56,5 +60,5 @@ def _recurse_hierarchy(node):
     return _r
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     _recurse_hierarchy(schema.model.classes.IdentifiedObject)
