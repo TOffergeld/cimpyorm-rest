@@ -76,3 +76,7 @@ def _recurse_hierarchy(node):
         _r["children"][child.name] = _recurse_hierarchy(child)
     _r["children"] = {key: value for key, value in sorted(_r["children"].items())}
     return _r
+
+
+def test_dummy():
+    pass
