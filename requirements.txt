@@ -2,3 +2,4 @@ cimpyorm
 fastapi
 uvicorn
 jinja2
+gunicorn
