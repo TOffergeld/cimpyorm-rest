@@ -34,5 +34,5 @@ jobs:
       with:
         app-name: cim-browser
         slot-name: Production
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CEF0899345384CBF9A8D35C61B14D877 }}
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0DC06A306C5F446E9F4784F95566F3C3 }}
 
