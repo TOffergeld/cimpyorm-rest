@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block title %}CIM Explorer{% endblock %}
+
+{% block content %}
+<h3>Showing properties for: <strong>{{objectname}}</strong> (A CIM-<i>{{category}}</i>).</h3>
+{{table | safe}}
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+<script>
+$(".dataframe").find("td").click(
+    function() {
+        const text = $(this).text();
+        let column_name = $(this).closest("table").find("th").eq($(this).index()).text();
+        if(["Defined in", "Datatype"].includes(column_name)){
+            $.get('{{ url_for("objectnames") }}').done(function (data){
+                let names = data;
+                let ref_target;
+                if(text.startsWith("*")) {
+                    ref_target = text.slice(1);
+                }
+                else{
+                    ref_target = text
+                }
+                console.log(ref_target);
+
+                if(names.includes(ref_target)){
+                    path = location.protocol + "//" + location.host+"/show_table/"+ref_target;
+                    window.location.href = path
+                }
+            });
+        }
+
+    }
+);
+
+$(".dataframe").find("td").hover(
+    function() {
+        let column_name = $(this).closest("table").find("th").eq($(this).index()).text();
+        if(["Defined in", "Datatype"].includes(column_name)){
+            $(this).css("cursor", "pointer");
+        }
+    },
+    function() {
+        let column_name = $(this).closest("table").find("th").eq($(this).index()).text();
+        if(["Defined in", "Datatype"].includes(column_name)) {
+            $(this).css("cursor", "default");
+        }
+    }
+);
+</script>
+{% endblock %}

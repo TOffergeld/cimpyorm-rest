@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}CIM Explorer: Index{% endblock %}
+
+{% block content %}
+{{super()}}
+
+<table class="table table-striped table-hover">
+    {% for cname in cnames %}
+    <tr>
+        <td>
+            <a href="{{ url_for('show_table', objectname=cname)}}">{{cname | safe}}</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
