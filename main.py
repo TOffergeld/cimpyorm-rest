@@ -21,17 +21,6 @@ def index(request: Request):
     return templates.TemplateResponse("layout.html", {"request": request})
 
 
-@app.get("/class/{name}")
-def class_(request: Request, name: str):
-    try:
-        class_ = vars(schema.model.classes)[name]
-    except KeyError:
-        return None
-    return templates.TemplateResponse("classes.html", 
-    {"request": request, "table": class_.to_html(
-        classes=("table", "table-striped"))})
-
-
 @app.get("/classes/{classname}")
 async def get_class(classname: str):
     """
@@ -65,20 +54,28 @@ def hierarchy(start: str):
 
 
 
-@app.get("/show_table/{objectname}")
-def show_table(request: Request, objectname: str):
+@app.get("/details/{objectname}")
+def details(request: Request, objectname: str):
     if objectname in model.keys():
-        return templates.TemplateResponse("table.html", 
-        {
-            "request": request, 
-            "objectname": objectname, 
-            "category": typemap[objectname],
-            "table": model[objectname].to_html(
+        try: 
+            table = model[objectname].to_html(
                 index=False, 
-                classes=["table", "table-striped", "table-hover"], 
+                classes=("table", "table-striped", "table-sm", "table-hover"), 
                 table_id="description")
-        }
-        )
+            return templates.TemplateResponse("table.html", 
+            {
+                "request": request, 
+                "objectname": objectname, 
+                "category": typemap[objectname],
+                "table": table
+            })
+        except AttributeError:
+            return templates.TemplateResponse("description.html", 
+            {
+                "request": request, 
+                "description": str(model[objectname])
+            }
+            )
 
 
 @app.get("/show_table")

@@ -26,7 +26,7 @@ $(".dataframe").find("td").click(
                 console.log(ref_target);
 
                 if(names.includes(ref_target)){
-                    path = location.protocol + "//" + location.host+"/show_table/"+ref_target;
+                    path = location.protocol + "//" + location.host+"/details/"+ref_target;
                     window.location.href = path
                 }
             });

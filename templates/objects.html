@@ -8,7 +8,7 @@
     {% for cname in cnames %}
     <tr>
         <td>
-            <a href="{{ url_for('show_table', objectname=cname)}}">{{cname | safe}}</a>
+            <a href="{{ url_for('details', objectname=cname)}}">{{cname | safe}}</a>
         </td>
     </tr>
     {% endfor %}
